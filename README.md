@@ -2,7 +2,7 @@
 
 **Submitted by:** Nikita Goykar  
 **Platform Used:** Amazon EKS (Multi-node Cluster)  
-**Region:** ap-south-1 (Mumbai)  
+**Region:** united states (N vergenia)  
 **Kubernetes Version:** v1.32.x
 
 ---
@@ -20,7 +20,7 @@ k8s-deployment/
 ├── service.yaml
 ├── ingress.yaml # optional
 ├── README.md
-└── screenshots/ # folder for images
+└── images/ # folder for images
 
 
 

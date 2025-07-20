@@ -1,0 +1,437 @@
+
+hp@LAPTOP-7EP28BRS MINGW64 ~/Downloads (master)
+$ ssh -i "888-NVirginia.pem" ec2-user@ec2-54-82-76-132.compute-1.amazonaws.com
+The authenticity of host 'ec2-54-82-76-132.compute-1.amazonaws.com (54.82.76.132)' can't be established.
+ED25519 key fingerprint is SHA256:OnaTSwqY0Ain5UwPJMoWOva0yY8+l2Li7PyHvRoShuo.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added 'ec2-54-82-76-132.compute-1.amazonaws.com' (ED25519) to the list of known hosts.
+   ,     #_
+   ~\_  ####_        Amazon Linux 2023
+  ~~  \_#####\
+  ~~     \###|
+  ~~       \#/ ___   https://aws.amazon.com/linux/amazon-linux-2023
+   ~~       V~' '->
+    ~~~         /
+      ~~._.   _/
+         _/ _/
+       _/m/'
+[ec2-user@ip-172-31-44-35 ~]$ eksctl create cluster \
+  --name devops-cluster \
+  --region us-east-1 \
+  --nodegroup-name devops-nodes \
+  --node-type t2.micro \
+  --nodes 2 \
+  --nodes-min 1 \
+  --nodes-max 2 \
+  --managed
+-bash: eksctl: command not found
+[ec2-user@ip-172-31-44-35 ~]$ # 1. Download latest eksctl binary
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" -o eksctl.tar.gz
+
+# 2. Extract the tarball
+tar -xzf eksctl.tar.gz
+
+# 3. Move it to /usr/local/bin for global access
+sudo mv eksctl /usr/local/bin
+
+# 4. Verify installation
+eksctl version
+0.210.0
+[ec2-user@ip-172-31-44-35 ~]$ eksctl create cluster \
+  --name devops-cluster \
+  --region us-east-1 \
+  --nodegroup-name devops-nodes \
+  --node-type t2.micro \
+  --nodes 2 \
+  --nodes-min 1 \
+  --nodes-max 2 \
+  --managed
+2025-06-21 06:46:24 [ℹ]  eksctl version 0.210.0
+2025-06-21 06:46:24 [ℹ]  using region us-east-1
+2025-06-21 06:46:24 [ℹ]  setting availability zones to [us-east-1a us-east-1f]
+2025-06-21 06:46:24 [ℹ]  subnets for us-east-1a - public:192.168.0.0/19 private:192.168.64.0/19
+2025-06-21 06:46:24 [ℹ]  subnets for us-east-1f - public:192.168.32.0/19 private:192.168.96.0/19
+2025-06-21 06:46:24 [ℹ]  nodegroup "devops-nodes" will use "" [AmazonLinux2023/1.32]
+2025-06-21 06:46:24 [ℹ]  using Kubernetes version 1.32
+2025-06-21 06:46:24 [ℹ]  creating EKS cluster "devops-cluster" in "us-east-1" region with managed nodes
+2025-06-21 06:46:24 [ℹ]  will create 2 separate CloudFormation stacks for cluster itself and the initial managed nodegroup
+2025-06-21 06:46:24 [ℹ]  if you encounter any issues, check CloudFormation console or try 'eksctl utils describe-stacks --region=us-east-1 --cluster=devops-cluster'
+2025-06-21 06:46:24 [ℹ]  Kubernetes API endpoint access will use default of {publicAccess=true, privateAccess=false} for cluster "devops-cluster" in "us-east-1"
+2025-06-21 06:46:24 [ℹ]  CloudWatch logging will not be enabled for cluster "devops-cluster" in "us-east-1"
+2025-06-21 06:46:24 [ℹ]  you can enable it with 'eksctl utils update-cluster-logging --enable-types={SPECIFY-YOUR-LOG-TYPES-HERE (e.g. all)} --region=us-east-1 --cluster=devops-cluster'
+2025-06-21 06:46:24 [ℹ]  default addons coredns, metrics-server, vpc-cni, kube-proxy were not specified, will install them as EKS addons
+2025-06-21 06:46:24 [ℹ]
+2 sequential tasks: { create cluster control plane "devops-cluster",
+    2 sequential sub-tasks: {
+        2 sequential sub-tasks: {
+            1 task: { create addons },
+            wait for control plane to become ready,
+        },
+        create managed nodegroup "devops-nodes",
+    }
+}
+2025-06-21 06:46:24 [ℹ]  building cluster stack "eksctl-devops-cluster-cluster"
+2025-06-21 06:46:24 [ℹ]  deploying stack "eksctl-devops-cluster-cluster"
+2025-06-21 06:46:54 [ℹ]  waiting for CloudFormation stack "eksctl-devops-cluster-cluster"
+2025-06-21 06:47:24 [ℹ]  waiting for CloudFormation stack "eksctl-devops-cluster-cluster"
+
+2025-06-21 06:48:24 [ℹ]  waiting for CloudFormation stack "eksctl-devops-cluster-cluster"
+2025-06-21 06:49:24 [ℹ]  waiting for CloudFormation stack "eksctl-devops-cluster-cluster"
+2025-06-21 06:50:24 [ℹ]  waiting for CloudFormation stack "eksctl-devops-cluster-cluster"
+2025-06-21 06:51:24 [ℹ]  waiting for CloudFormation stack "eksctl-devops-cluster-cluster"
+2025-06-21 06:52:24 [ℹ]  waiting for CloudFormation stack "eksctl-devops-cluster-cluster"
+2025-06-21 06:53:25 [ℹ]  waiting for CloudFormation stack "eksctl-devops-cluster-cluster"
+2025-06-21 06:54:25 [ℹ]  waiting for CloudFormation stack "eksctl-devops-cluster-cluster"
+2025-06-21 06:54:25 [ℹ]  creating addon: coredns
+2025-06-21 06:54:26 [ℹ]  successfully created addon: coredns
+2025-06-21 06:54:26 [ℹ]  creating addon: metrics-server
+2025-06-21 06:54:26 [ℹ]  successfully created addon: metrics-server
+2025-06-21 06:54:27 [!]  recommended policies were found for "vpc-cni" addon, but since OIDC is disabled on the cluster, eksctl cannot configure the requested permissions; the recommended way to provide IAM permissions for "vpc-cni" addon is via pod identity associations; after addon creation is completed, add all recommended policies to the config file, under `addon.PodIdentityAssociations`, and run `eksctl update addon`
+2025-06-21 06:54:27 [ℹ]  creating addon: vpc-cni
+2025-06-21 06:54:27 [ℹ]  successfully created addon: vpc-cni
+2025-06-21 06:54:27 [ℹ]  creating addon: kube-proxy
+2025-06-21 06:54:27 [ℹ]  successfully created addon: kube-proxy
+2025-06-21 06:56:28 [ℹ]  building managed nodegroup stack "eksctl-devops-cluster-nodegroup-devops-nodes"
+2025-06-21 06:56:28 [ℹ]  deploying stack "eksctl-devops-cluster-nodegroup-devops-nodes"
+2025-06-21 06:56:28 [ℹ]  waiting for CloudFormation stack "eksctl-devops-cluster-nodegroup-devops-nodes"
+2025-06-21 06:56:58 [ℹ]  waiting for CloudFormation stack "eksctl-devops-cluster-nodegroup-devops-nodes"
+
+2025-06-21 06:57:36 [ℹ]  waiting for CloudFormation stack "eksctl-devops-cluster-nodegroup-devops-nodes"
+2025-06-21 06:58:09 [ℹ]  waiting for CloudFormation stack "eksctl-devops-cluster-nodegroup-devops-nodes"
+^C
+[ec2-user@ip-172-31-44-35 ~]$
+[ec2-user@ip-172-31-44-35 ~]$
+[ec2-user@ip-172-31-44-35 ~]$ eksctl utils associate-iam-oidc-provider \
+  --region us-east-1 \
+  --cluster devops-cluster \
+  --approve
+2025-06-21 07:00:23 [ℹ]  will create IAM Open ID Connect provider for cluster "devops-cluster" in "us-east-1"
+2025-06-21 07:00:23 [✔]  created IAM Open ID Connect provider for cluster "devops-cluster" in "us-east-1"
+[ec2-user@ip-172-31-44-35 ~]$ # Download the correct kubectl binary (latest compatible with EKS 1.32 is not yet officially released, so use 1.30+)
+curl -LO "https://dl.k8s.io/release/v1.30.1/bin/linux/amd64/kubectl"
+
+# Make it executable
+chmod +x kubectl
+
+# Move it to system path
+sudo mv kubectl /usr/local/bin/
+
+# Verify
+kubectl version --client
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   138  100   138    0     0   2657      0 --:--:-- --:--:-- --:--:--  2705
+100 49.0M  100 49.0M    0     0   118M      0 --:--:-- --:--:-- --:--:--  118M
+Client Version: v1.30.1
+Kustomize Version: v5.0.4-0.20230601165947-6ce0bf390ce3
+[ec2-user@ip-172-31-44-35 ~]$ kubectl get nodes
+E0621 07:01:25.872491    3002 memcache.go:265] couldn't get current server API group list: Get "http://localhost:8080/api?timeout=32s": dial tcp 127.0.0.1:8080: connect: connection refused
+E0621 07:01:25.872866    3002 memcache.go:265] couldn't get current server API group list: Get "http://localhost:8080/api?timeout=32s": dial tcp 127.0.0.1:8080: connect: connection refused
+E0621 07:01:25.874262    3002 memcache.go:265] couldn't get current server API group list: Get "http://localhost:8080/api?timeout=32s": dial tcp 127.0.0.1:8080: connect: connection refused
+E0621 07:01:25.874573    3002 memcache.go:265] couldn't get current server API group list: Get "http://localhost:8080/api?timeout=32s": dial tcp 127.0.0.1:8080: connect: connection refused
+E0621 07:01:25.876112    3002 memcache.go:265] couldn't get current server API group list: Get "http://localhost:8080/api?timeout=32s": dial tcp 127.0.0.1:8080: connect: connection refused
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+[ec2-user@ip-172-31-44-35 ~]$ ^C
+[ec2-user@ip-172-31-44-35 ~]$ aws eks --region us-east-1 update-kubeconfig --name devops-cluster
+Added new context arn:aws:eks:us-east-1:194722446439:cluster/devops-cluster to /home/ec2-user/.kube/config
+[ec2-user@ip-172-31-44-35 ~]$ kubectl config get-contexts
+kubectl config current-context
+CURRENT   NAME                                                        CLUSTER                                                     AUTHINFO                                                    NAMESPACE
+*         arn:aws:eks:us-east-1:194722446439:cluster/devops-cluster   arn:aws:eks:us-east-1:194722446439:cluster/devops-cluster   arn:aws:eks:us-east-1:194722446439:cluster/devops-cluster
+arn:aws:eks:us-east-1:194722446439:cluster/devops-cluster
+[ec2-user@ip-172-31-44-35 ~]$ kubectl get nodes
+NAME                             STATUS   ROLES    AGE     VERSION
+ip-192-168-41-173.ec2.internal   Ready    <none>   4m17s   v1.32.3-eks-473151a
+ip-192-168-8-41.ec2.internal     Ready    <none>   4m14s   v1.32.3-eks-473151a
+[ec2-user@ip-172-31-44-35 ~]$ ^C
+[ec2-user@ip-172-31-44-35 ~]$ kubectl create deployment nginx --image=nginx
+kubectl expose deployment nginx --port=80 --type=LoadBalancer
+deployment.apps/nginx created
+service/nginx exposed
+[ec2-user@ip-172-31-44-35 ~]$ ^C
+[ec2-user@ip-172-31-44-35 ~]$ kubectl create deployment nginx --image=nginx
+error: failed to create deployment: deployments.apps "nginx" already exists
+[ec2-user@ip-172-31-44-35 ~]$ kubectl expose deployment nginx --port=80 --type=LoadBalancer
+Error from server (AlreadyExists): services "nginx" already exists
+[ec2-user@ip-172-31-44-35 ~]$ kubectl get svc nginx
+NAME    TYPE           CLUSTER-IP       EXTERNAL-IP                                                               PORT(S)        AGE
+nginx   LoadBalancer   10.100.144.205   aae7b128540094fa5a7b4e143585c84f-1795891523.us-east-1.elb.amazonaws.com   80:32548/TCP   57s
+[ec2-user@ip-172-31-44-35 ~]$ ^C
+[ec2-user@ip-172-31-44-35 ~]$ kubectl get nodes
+kubectl cluster-info
+NAME                             STATUS   ROLES    AGE     VERSION
+ip-192-168-41-173.ec2.internal   Ready    <none>   7m43s   v1.32.3-eks-473151a
+ip-192-168-8-41.ec2.internal     Ready    <none>   7m40s   v1.32.3-eks-473151a
+Kubernetes control plane is running at https://A9EC79A5C1C5DA56744179FC28BC6883.gr7.us-east-1.eks.amazonaws.com
+CoreDNS is running at https://A9EC79A5C1C5DA56744179FC28BC6883.gr7.us-east-1.eks.amazonaws.com/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+[ec2-user@ip-172-31-44-35 ~]$ nano deployment.yaml
+[ec2-user@ip-172-31-44-35 ~]$ nano service.yaml
+[ec2-user@ip-172-31-44-35 ~]$ nano ingress.yaml
+[ec2-user@ip-172-31-44-35 ~]$ kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+kubectl apply -f ingress.yaml
+deployment.apps/web-app created
+service/web-app-service created
+ingress.networking.k8s.io/web-app-ingress created
+[ec2-user@ip-172-31-44-35 ~]$ kubectl get ingress
+NAME              CLASS   HOSTS   ADDRESS   PORTS   AGE
+web-app-ingress   alb     *                 80      11s
+[ec2-user@ip-172-31-44-35 ~]$ ^C
+[ec2-user@ip-172-31-44-35 ~]$ kubectl get ingress
+NAME              CLASS   HOSTS   ADDRESS   PORTS   AGE
+web-app-ingress   alb     *                 80      45s
+[ec2-user@ip-172-31-44-35 ~]$ kubectl get pods -n kube-system | grep aws-load
+[ec2-user@ip-172-31-44-35 ~]$ ^C
+[ec2-user@ip-172-31-44-35 ~]$ eksctl utils associate-iam-oidc-provider \
+  --region us-east-1 \
+  --cluster devops-cluster \
+  --approve
+2025-06-21 07:10:01 [ℹ]  IAM Open ID Connect provider is already associated with cluster "devops-cluster" in "us-east-1"
+[ec2-user@ip-172-31-44-35 ~]$ ^C
+[ec2-user@ip-172-31-44-35 ~]$ curl -o iam_policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy.json
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  8955  100  8955    0     0  91600      0 --:--:-- --:--:-- --:--:-- 92319
+[ec2-user@ip-172-31-44-35 ~]$ aws iam create-policy \
+  --policy-name AWSLoadBalancerControllerIAMPolicy \
+  --policy-document file://iam_policy.json
+{
+    "Policy": {
+        "PolicyName": "AWSLoadBalancerControllerIAMPolicy",
+        "PolicyId": "ANPAS2VS4XRTR5HT2LO5D",
+        "Arn": "arn:aws:iam::194722446439:policy/AWSLoadBalancerControllerIAMPolicy",
+        "Path": "/",
+        "DefaultVersionId": "v1",
+        "AttachmentCount": 0,
+        "PermissionsBoundaryUsageCount": 0,
+        "IsAttachable": true,
+        "CreateDate": "2025-06-21T07:10:37+00:00",
+        "UpdateDate": "2025-06-21T07:10:37+00:00"
+    }
+}
+[ec2-user@ip-172-31-44-35 ~]$ aws sts get-caller-identity --query Account --output text
+194722446439
+[ec2-user@ip-172-31-44-35 ~]$ eksctl create iamserviceaccount \
+  --cluster devops-cluster \
+  --region us-east-1 \
+  --namespace kube-system \
+  --name aws-load-balancer-controller \
+  --attach-policy-arn arn:aws:iam::194722446439:policy/AWSLoadBalancerControllerIAMPolicy \
+  --approve
+2025-06-21 07:11:34 [ℹ]  1 iamserviceaccount (kube-system/aws-load-balancer-controller) was included (based on the include/exclude rules)
+2025-06-21 07:11:34 [!]  serviceaccounts that exist in Kubernetes will be excluded, use --override-existing-serviceaccounts to override
+2025-06-21 07:11:34 [ℹ]  1 task: {
+    2 sequential sub-tasks: {
+        create IAM role for serviceaccount "kube-system/aws-load-balancer-controller",
+        create serviceaccount "kube-system/aws-load-balancer-controller",
+    } }2025-06-21 07:11:34 [ℹ]  building iamserviceaccount stack "eksctl-devops-cluster-addon-iamserviceaccount-kube-system-aws-load-balancer-controller"
+2025-06-21 07:11:34 [ℹ]  deploying stack "eksctl-devops-cluster-addon-iamserviceaccount-kube-system-aws-load-balancer-controller"
+2025-06-21 07:11:34 [ℹ]  waiting for CloudFormation stack "eksctl-devops-cluster-addon-iamserviceaccount-kube-system-aws-load-balancer-controller"
+2025-06-21 07:12:04 [ℹ]  waiting for CloudFormation stack "eksctl-devops-cluster-addon-iamserviceaccount-kube-system-aws-load-balancer-controller"
+2025-06-21 07:12:04 [ℹ]  created serviceaccount "kube-system/aws-load-balancer-controller"
+[ec2-user@ip-172-31-44-35 ~]$ curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 11913  100 11913    0     0   478k      0 --:--:-- --:--:-- --:--:--  484k
+[WARNING] Could not find git. It is required for plugin installation.
+Downloading https://get.helm.sh/helm-v3.18.3-linux-amd64.tar.gz
+Verifying checksum... Done.
+Preparing to install helm into /usr/local/bin
+helm installed into /usr/local/bin/helm
+[ec2-user@ip-172-31-44-35 ~]$ helm repo add eks https://aws.github.io/eks-charts
+helm repo update
+"eks" has been added to your repositories
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "eks" chart repository
+Update Complete. ⎈Happy Helming!⎈
+[ec2-user@ip-172-31-44-35 ~]$ aws eks describe-cluster \
+  --name devops-cluster \
+  --region us-east-1 \
+  --query "cluster.resourcesVpcConfig.vpcId" \
+  --output text
+vpc-028524683bc5f466b
+[ec2-user@ip-172-31-44-35 ~]$ ^C
+[ec2-user@ip-172-31-44-35 ~]$ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
+  -n kube-system \
+  --set clusterName=devops-cluster \
+  --set serviceAccount.create=false \
+  --set region=us-east-1 \
+  --set vpcId=vpc-028524683bc5f466b \
+  --set serviceAccount.name=aws-load-balancer-controller
+NAME: aws-load-balancer-controller
+LAST DEPLOYED: Sat Jun 21 07:13:23 2025
+NAMESPACE: kube-system
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+AWS Load Balancer controller installed!
+[ec2-user@ip-172-31-44-35 ~]$ kubectl get pods -n kube-system | grep aws-load
+aws-load-balancer-controller-767dfbf6d9-m6zxm   0/1     Pending   0          12s
+aws-load-balancer-controller-767dfbf6d9-v4d9f   0/1     Pending   0          12s
+[ec2-user@ip-172-31-44-35 ~]$ kubectl get ingress web-app-ingress
+NAME              CLASS   HOSTS   ADDRESS   PORTS   AGE
+web-app-ingress   alb     *                 80      5m55s
+[ec2-user@ip-172-31-44-35 ~]$ ^C
+[ec2-user@ip-172-31-44-35 ~]$ kubectl describe pod -n kube-system aws-load-balancer-controller-767dfbf6d9-m6zxm
+Name:                 aws-load-balancer-controller-767dfbf6d9-m6zxm
+Namespace:            kube-system
+Priority:             2000000000
+Priority Class Name:  system-cluster-critical
+Service Account:      aws-load-balancer-controller
+Node:                 <none>
+Labels:               app.kubernetes.io/instance=aws-load-balancer-controller
+                      app.kubernetes.io/name=aws-load-balancer-controller
+                      pod-template-hash=767dfbf6d9
+Annotations:          prometheus.io/port: 8080
+                      prometheus.io/scrape: true
+Status:               Pending
+IP:
+IPs:                  <none>
+Controlled By:        ReplicaSet/aws-load-balancer-controller-767dfbf6d9
+Containers:
+  aws-load-balancer-controller:
+    Image:       public.ecr.aws/eks/aws-load-balancer-controller:v2.13.3
+    Ports:       9443/TCP, 8080/TCP
+    Host Ports:  0/TCP, 0/TCP
+    Args:
+      --cluster-name=devops-cluster
+      --ingress-class=alb
+      --aws-region=us-east-1
+      --aws-vpc-id=vpc-028524683bc5f466b
+    Liveness:   http-get http://:61779/healthz delay=30s timeout=10s period=10s #success=1 #failure=2
+    Readiness:  http-get http://:61779/readyz delay=10s timeout=10s period=10s #success=1 #failure=2
+    Environment:
+      AWS_STS_REGIONAL_ENDPOINTS:   regional
+      AWS_DEFAULT_REGION:           us-east-1
+      AWS_REGION:                   us-east-1
+      AWS_ROLE_ARN:                 arn:aws:iam::194722446439:role/eksctl-devops-cluster-addon-iamserviceaccount-Role1-egyrOHQRqyR6
+      AWS_WEB_IDENTITY_TOKEN_FILE:  /var/run/secrets/eks.amazonaws.com/serviceaccount/token
+    Mounts:
+      /tmp/k8s-webhook-server/serving-certs from cert (ro)
+      /var/run/secrets/eks.amazonaws.com/serviceaccount from aws-iam-token (ro)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-56tws (ro)
+Conditions:
+  Type           Status
+  PodScheduled   False
+Volumes:
+  aws-iam-token:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  86400
+  cert:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  aws-load-balancer-tls
+    Optional:    false
+  kube-api-access-56tws:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason            Age   From               Message
+  ----     ------            ----  ----               -------
+  Warning  FailedScheduling  73s   default-scheduler  0/2 nodes are available: 2 Too many pods. preemption: 0/2 nodes are available: 2 No preemption victims found for incoming pod.
+[ec2-user@ip-172-31-44-35 ~]$ ^C
+[ec2-user@ip-172-31-44-35 ~]$ eksctl create nodegroup \
+  --cluster devops-cluster \
+  --region us-east-1 \
+  --name larger-nodes \
+  --node-type t3.medium \
+  --nodes 2 \
+  --nodes-min 1 \
+  --nodes-max 2 \
+  --managed
+2025-06-21 07:15:09 [ℹ]  will use version 1.32 for new nodegroup(s) based on control plane version
+2025-06-21 07:15:10 [ℹ]  nodegroup "larger-nodes" will use "" [AmazonLinux2023/1.32]
+2025-06-21 07:15:10 [ℹ]  1 existing nodegroup(s) (devops-nodes) will be excluded
+2025-06-21 07:15:10 [ℹ]  1 nodegroup (larger-nodes) was included (based on the include/exclude rules)
+2025-06-21 07:15:10 [ℹ]  will create a CloudFormation stack for each of 1 managed nodegroups in cluster "devops-cluster"
+2025-06-21 07:15:10 [ℹ]
+2 sequential tasks: { fix cluster compatibility, 1 task: { 1 task: { create managed nodegroup "larger-nodes" } }
+}
+2025-06-21 07:15:10 [ℹ]  checking cluster stack for missing resources
+2025-06-21 07:15:10 [ℹ]  cluster stack has all required resources
+2025-06-21 07:15:10 [ℹ]  building managed nodegroup stack "eksctl-devops-cluster-nodegroup-larger-nodes"
+2025-06-21 07:15:11 [ℹ]  deploying stack "eksctl-devops-cluster-nodegroup-larger-nodes"
+2025-06-21 07:15:11 [ℹ]  waiting for CloudFormation stack "eksctl-devops-cluster-nodegroup-larger-nodes"
+
+2025-06-21 07:15:41 [ℹ]  waiting for CloudFormation stack "eksctl-devops-cluster-nodegroup-larger-nodes"
+2025-06-21 07:16:23 [ℹ]  waiting for CloudFormation stack "eksctl-devops-cluster-nodegroup-larger-nodes"
+2025-06-21 07:17:36 [ℹ]  waiting for CloudFormation stack "eksctl-devops-cluster-nodegroup-larger-nodes"
+2025-06-21 07:17:36 [ℹ]  no tasks
+2025-06-21 07:17:36 [✔]  created 0 nodegroup(s) in cluster "devops-cluster"
+2025-06-21 07:17:36 [ℹ]  nodegroup "larger-nodes" has 2 node(s)
+2025-06-21 07:17:36 [ℹ]  node "ip-192-168-4-56.ec2.internal" is ready
+2025-06-21 07:17:36 [ℹ]  node "ip-192-168-45-233.ec2.internal" is ready
+2025-06-21 07:17:36 [ℹ]  waiting for at least 1 node(s) to become ready in "larger-nodes"
+2025-06-21 07:17:36 [ℹ]  nodegroup "larger-nodes" has 2 node(s)
+2025-06-21 07:17:36 [ℹ]  node "ip-192-168-4-56.ec2.internal" is ready
+2025-06-21 07:17:36 [ℹ]  node "ip-192-168-45-233.ec2.internal" is ready
+2025-06-21 07:17:36 [✔]  created 1 managed nodegroup(s) in cluster "devops-cluster"
+2025-06-21 07:17:36 [ℹ]  checking security group configuration for all nodegroups
+2025-06-21 07:17:36 [ℹ]  all nodegroups have up-to-date cloudformation templates
+[ec2-user@ip-172-31-44-35 ~]$
+[ec2-user@ip-172-31-44-35 ~]$ kubectl get nodes
+kubectl get pods -n kube-system
+kubectl get ingress
+NAME                             STATUS   ROLES    AGE     VERSION
+ip-192-168-4-56.ec2.internal     Ready    <none>   3m18s   v1.32.3-eks-473151a
+ip-192-168-41-173.ec2.internal   Ready    <none>   21m     v1.32.3-eks-473151a
+ip-192-168-45-233.ec2.internal   Ready    <none>   3m19s   v1.32.3-eks-473151a
+ip-192-168-8-41.ec2.internal     Ready    <none>   21m     v1.32.3-eks-473151a
+NAME                                            READY   STATUS    RESTARTS   AGE
+aws-load-balancer-controller-767dfbf6d9-m6zxm   1/1     Running   0          6m25s
+aws-load-balancer-controller-767dfbf6d9-v4d9f   1/1     Running   0          6m25s
+aws-node-4fbbp                                  2/2     Running   0          21m
+aws-node-pzz4k                                  2/2     Running   0          3m20s
+aws-node-qc9ts                                  2/2     Running   0          3m19s
+aws-node-qcsf6                                  2/2     Running   0          21m
+coredns-6b9575c64c-h5k9d                        1/1     Running   0          25m
+coredns-6b9575c64c-qmksq                        1/1     Running   0          25m
+kube-proxy-6zt7k                                1/1     Running   0          3m20s
+kube-proxy-7tj77                                1/1     Running   0          3m19s
+kube-proxy-h7dnz                                1/1     Running   0          21m
+kube-proxy-r98md                                1/1     Running   0          21m
+metrics-server-579b5fcb66-7755m                 1/1     Running   0          25m
+metrics-server-579b5fcb66-hxf88                 1/1     Running   0          25m
+NAME              CLASS   HOSTS   ADDRESS                                                               PORTS   AGE
+web-app-ingress   alb     *       k8s-default-webappin-7e567274be-3981013.us-east-1.elb.amazonaws.com   80      11m
+[ec2-user@ip-172-31-44-35 ~]$ ^C
+[ec2-user@ip-172-31-44-35 ~]$ kubectl get nodes
+kubectl get pods -A
+kubectl get ingress
+NAME                             STATUS   ROLES    AGE     VERSION
+ip-192-168-4-56.ec2.internal     Ready    <none>   3m53s   v1.32.3-eks-473151a
+ip-192-168-41-173.ec2.internal   Ready    <none>   22m     v1.32.3-eks-473151a
+ip-192-168-45-233.ec2.internal   Ready    <none>   3m54s   v1.32.3-eks-473151a
+ip-192-168-8-41.ec2.internal     Ready    <none>   22m     v1.32.3-eks-473151a
+NAMESPACE     NAME                                            READY   STATUS    RESTARTS   AGE
+default       nginx-5869d7778c-pmcr2                          1/1     Running   0          17m
+default       web-app-7bcbbc8fb4-4l2j4                        1/1     Running   0          12m
+default       web-app-7bcbbc8fb4-8lh56                        1/1     Running   0          12m
+kube-system   aws-load-balancer-controller-767dfbf6d9-m6zxm   1/1     Running   0          7m
+kube-system   aws-load-balancer-controller-767dfbf6d9-v4d9f   1/1     Running   0          7m
+kube-system   aws-node-4fbbp                                  2/2     Running   0          22m
+kube-system   aws-node-pzz4k                                  2/2     Running   0          3m55s
+kube-system   aws-node-qc9ts                                  2/2     Running   0          3m54s
+kube-system   aws-node-qcsf6                                  2/2     Running   0          22m
+kube-system   coredns-6b9575c64c-h5k9d                        1/1     Running   0          25m
+kube-system   coredns-6b9575c64c-qmksq                        1/1     Running   0          25m
+kube-system   kube-proxy-6zt7k                                1/1     Running   0          3m55s
+kube-system   kube-proxy-7tj77                                1/1     Running   0          3m54s
+kube-system   kube-proxy-h7dnz                                1/1     Running   0          22m
+kube-system   kube-proxy-r98md                                1/1     Running   0          22m
+kube-system   metrics-server-579b5fcb66-7755m                 1/1     Running   0          25m
+kube-system   metrics-server-579b5fcb66-hxf88                 1/1     Running   0          25m
+NAME              CLASS   HOSTS   ADDRESS                                                               PORTS   AGE
+web-app-ingress   alb     *       k8s-default-webappin-7e567274be-3981013.us-east-1.elb.amazonaws.com   80      12m
+[ec2-user@ip-172-31-44-35 ~]$ ^C
+[ec2-user@ip-172-31-44-35 ~]$
